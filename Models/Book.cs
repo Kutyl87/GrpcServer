@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace LibraryGrpc.Models;
 
 public class Book
 {
-    public int Id { get; set; }
+    [Key]
+    public int BOOK_ID { get; set; }
 
     public string Title { get; set; } = null!;
 
@@ -14,6 +17,6 @@ public class Book
 
     public bool Availability { get; set; }
 
-    public int CurrentOwnerId { get; set; }
+    public int? CurrentOwnerId { get; set; }
 
 }
