@@ -17,5 +17,7 @@ public class DbContextClass : DbContext
         optionsBuilder.UseMySql(connectionString, new MySqlServerVersion(new Version()));
     }
 
-    public DbSet<Book> Books { get; set; }
+    public DbSet<Book> Book { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<Customer> Customer { get; set; }
 }

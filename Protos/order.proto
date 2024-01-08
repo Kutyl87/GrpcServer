@@ -1,0 +1,95 @@
+
+syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+option csharp_namespace = "LibraryGrpc";
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+package orderit;
+
+service OrderIt
+{
+
+    // Read single
+    rpc ReadOrder(ReadOrderRequest) returns (ReadOrderResponse) {
+        option (google.api.http) = {
+            get: "/v1/order/{Id}"
+        };
+    }
+
+    // Read list
+    rpc ListOrder(GetAllOrderRequest) returns (GetAllOrderResponse) {
+        option (google.api.http) = {
+            get: "/v1/order"
+        };
+    }
+
+    // Update
+    rpc UpdateOrder(UpdateOrderRequest) returns (UpdateOrderResponse) {
+        option (google.api.http) = {
+            put: "/v1/order",
+            body: "*"
+        };
+    }
+
+    rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse) {
+        option (google.api.http) = {
+            put: "/v1/order",
+            body: "*"
+        };
+    }
+
+}
+
+
+message ReadOrderRequest
+{
+    int32 Id = 1;
+}
+
+message ReadOrderResponse
+{
+    int32 Id = 1;
+    google.protobuf.Timestamp orderDate = 2;
+    int32 bookId = 3;
+    int32 customerId = 4;
+    string state = 5;
+    google.protobuf.Timestamp returnDate = 6;
+    
+}
+
+message GetAllOrderRequest { }
+
+message GetAllOrderResponse
+{
+    repeated ReadOrderResponse Order = 1;
+}
+
+message UpdateOrderRequest
+{
+    int32 id = 1;
+    string state = 2;
+    google.protobuf.Timestamp returnDate  = 3;
+}
+
+message UpdateOrderResponse
+{
+    int32 id = 1;
+}
+
+message CreateOrderRequest
+{
+    int32 id = 1;
+    google.protobuf.Timestamp orderDate = 2;
+    int32 bookId = 3;
+    int32 customerId = 4;
+    string state = 5;
+    google.protobuf.Timestamp returnDate = 6;
+}
+
+message CreateOrderResponse
+{
+    int32 id = 1;
+}
+    
+    

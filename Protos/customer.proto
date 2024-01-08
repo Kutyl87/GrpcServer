@@ -1,0 +1,71 @@
+
+syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+option csharp_namespace = "LibraryGrpc";
+import "google/api/annotations.proto";
+
+package customerit;
+
+service CustomerIt
+{
+    rpc ListCustomer(GetAllCustomerRequest) returns (GetAllCustomerResponse) {
+        option (google.api.http) = {
+            get: "/v1/customer"
+        };
+    }
+
+    // Read single
+    rpc ReadCustomer(ReadCustomerRequest) returns (ReadCustomerResponse) {
+        option (google.api.http) = {
+            get: "/v1/customer/{Id}"
+        };
+    }
+
+
+    // Update
+    rpc UpdateCustomer(UpdateCustomerRequest) returns (UpdateCustomerResponse) {
+        option (google.api.http) = {
+            put: "/v1/customer",
+            body: "*"
+        };
+    }
+
+}
+message GetAllCustomerRequest { }
+
+message GetAllCustomerResponse
+{
+    repeated ReadCustomerResponse customer = 1;
+}
+
+message ReadCustomerRequest
+{
+    int32 Id = 1;
+}
+
+message ReadCustomerResponse
+{
+    int32 Id = 1;
+    string name = 2;
+    string surname = 3;
+    string login = 4;
+    string mail = 5;
+    string password = 6;
+    
+}
+
+message UpdateCustomerRequest
+{
+    int32 Id = 1;
+    string name = 2;
+    string surname = 3;
+    string login = 4;
+    string mail = 5;
+    string password = 6;
+}
+
+message UpdateCustomerResponse
+{
+    int32 id = 1;
+}
+    

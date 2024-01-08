@@ -5,7 +5,7 @@ namespace LibraryGrpc.Models;
 public class Book
 {
     [Key]
-    public int BOOK_ID { get; set; }
+    public int BookId { get; set; }
 
     public string Title { get; set; } = null!;
 
@@ -17,6 +17,10 @@ public class Book
 
     public bool Availability { get; set; }
 
+    public string BookDescription { get; set; } = null!;
+
     public int? CurrentOwnerId { get; set; }
+
+    
 
 }

@@ -2,7 +2,7 @@
 syntax = "proto3";
 import "google/protobuf/wrappers.proto";
 option csharp_namespace = "LibraryGrpc";
-
+import "google/api/annotations.proto";
 
 package bookit;
 
@@ -11,14 +11,24 @@ service BookIt
 
     // Read single
     rpc ReadBook(ReadBookRequest) returns (ReadBookResponse) {
+        option (google.api.http) = {
+            get: "/v1/book/{Id}"
+        };
     }
 
     // Read list
-    rpc ListBook(GetAllRequest) returns (GetAllResponse) {
+    rpc ListBook(GetAllBookRequest) returns (GetAllBookResponse) {
+        option (google.api.http) = {
+            get: "/v1/book"
+        };
     }
 
     // Update
     rpc UpdateBook(UpdateBookRequest) returns (UpdateBookResponse) {
+        option (google.api.http) = {
+            put: "/v1/book",
+            body: "*"
+        };
     }
 
 }
@@ -37,12 +47,14 @@ message ReadBookResponse
     string genre = 4;
     float rating = 5;
     bool availability = 6;
-    int32 CurrentOwnerId  = 7;
+    string description = 7;
+    int32 CurrentOwnerId  = 8;
+    
 }
 
-message GetAllRequest { }
+message GetAllBookRequest { }
 
-message GetAllResponse
+message GetAllBookResponse
 {
     repeated ReadBookResponse book = 1;
 }

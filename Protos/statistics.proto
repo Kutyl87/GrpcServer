@@ -1,0 +1,46 @@
+
+syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+option csharp_namespace = "LibraryGrpc";
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+package statisticsit;
+
+service StatisticsIt
+{
+
+    // Read single
+    rpc ReadBookHistory(GetBookHistoryRequest) returns (GetBookHistoryResponse) {
+        option (google.api.http) = {
+            get: "/v1/statistics"
+        };
+    }
+}
+
+message GetBookHistoryRequest { }
+
+message GetBookHistoryResponse
+{
+    repeated ReadBookHistoryResponse Order = 1;
+}
+
+
+message ReadBookHistoryRequest
+{
+    int32 Id = 1;
+}
+
+message ReadBookHistoryResponse
+{
+    int32 Id = 1;
+    google.protobuf.Timestamp orderDate = 2;
+    int32 bookId = 3;
+    int32 customerId = 4;
+    string state = 5;
+    string bookTitle = 6;
+    string bookAuthor = 7;
+    string bookGenre = 8;
+    google.protobuf.Timestamp returnDate = 9;
+    
+}

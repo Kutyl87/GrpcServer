@@ -15,25 +15,29 @@ public class BookService : BookIt.BookItBase
     {
         _dbContext = dbContext;
     }
-    public override async Task<GetAllResponse> ListBook(GetAllRequest request, ServerCallContext context)
+    public override async Task<GetAllBookResponse> ListBook(GetAllBookRequest request, ServerCallContext context)
     {
-        var response = new GetAllResponse();
+        var response = new GetAllBookResponse();
         var Books = await _dbContext.Book.ToListAsync();
 
         foreach (var book in Books)
         {
             var readBookResponse = new ReadBookResponse
             {
-                Id = book.BOOK_ID,
+                Id = book.BookId,
                 Title = book.Title,
                 Author = book.Author,
                 Genre = book.Genre,
                 Rating = book.Rating,
-                Availability = book.Availability
+                Availability = book.Availability,
+                Description = book.BookDescription
             };
 
-
-            readBookResponse.CurrentOwnerId = book.CurrentOwnerId != null ? (int)book.CurrentOwnerId : 0;
+            if (book.CurrentOwnerId != null)
+            {
+                readBookResponse.CurrentOwnerId = (int)book.CurrentOwnerId;
+            }
+            
 
             response.Book.Add(readBookResponse);
             
@@ -48,16 +52,19 @@ public class BookService : BookIt.BookItBase
         if (request.Id <= 0)
             throw new RpcException(new Status(StatusCode.InvalidArgument, "resouce index must be greater than 0"));
 
-        var book = await _dbContext.Book.FirstOrDefaultAsync(t => t.BOOK_ID == request.Id);
+        var book = await _dbContext.Book.FirstOrDefaultAsync(t => t.BookId == request.Id);
 
         if (book != null)
         {
             return await Task.FromResult(new ReadBookResponse
             {
-                Id = book.BOOK_ID,
+                Id = book.BookId,
                 Title = book.Title,
                 Author = book.Author,
                 Genre = book.Genre,
+                Rating = book.Rating,
+                Availability = book.Availability,
+                Description = book.BookDescription
 
 
             });
@@ -71,7 +78,7 @@ public class BookService : BookIt.BookItBase
         if (request.Id <= 0 || request.CurrentOwnerId <= 0)
             throw new RpcException(new Status(StatusCode.InvalidArgument, "You must suppply a valid object"));
 
-        var book = await _dbContext.Book.FirstOrDefaultAsync(t => t.BOOK_ID == request.Id);
+        var book = await _dbContext.Book.FirstOrDefaultAsync(t => t.BookId == request.Id);
 
         if (!book.Availability)
             throw new RpcException(new Status(StatusCode.InvalidArgument, "Book is not available"));
@@ -86,7 +93,7 @@ public class BookService : BookIt.BookItBase
 
         return await Task.FromResult(new UpdateBookResponse
         {
-            Id = book.BOOK_ID
+            Id = book.BookId
         });
     }
 
