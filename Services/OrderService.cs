@@ -80,5 +80,28 @@ public class OrderService : OrderIt.OrderItBase
         throw new RpcException(new Status(StatusCode.NotFound, $"No Task with id {request.Id}"));
     }
 
+    public override async Task<UpdateOrderResponse> UpdateOrder(UpdateOrderRequest request, ServerCallContext context)
+    {
+
+        if (request.BookId <= 0 || request.CustomerId <= 0)
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "You must suppply a valid object"));
+
+        var order = await _dbContext.Orders.FirstOrDefaultAsync(t => t.BookId == request.BookId && t.CustomerId == request.CustomerId);
+
+        if (order == null)
+            throw new RpcException(new Status(StatusCode.NotFound, $"No Task"));
+
+
+        order.ReturnDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
+        order.State = "Returned";
+
+        await _dbContext.SaveChangesAsync();
+
+        return await Task.FromResult(new UpdateOrderResponse
+        {
+            Id = order.OrderId
+        });
+    }
+
 
 }

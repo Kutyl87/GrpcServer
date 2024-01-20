@@ -27,7 +27,7 @@ service OrderIt
     // Update
     rpc UpdateOrder(UpdateOrderRequest) returns (UpdateOrderResponse) {
         option (google.api.http) = {
-            put: "/v1/order",
+            put: "/v1/order/return",
             body: "*"
         };
     }
@@ -67,9 +67,8 @@ message GetAllOrderResponse
 
 message UpdateOrderRequest
 {
-    int32 id = 1;
-    string state = 2;
-    google.protobuf.Timestamp returnDate  = 3;
+    int32 bookId = 1;
+    int32 customerId = 2;
 }
 
 message UpdateOrderResponse
