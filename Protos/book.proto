@@ -31,6 +31,14 @@ service BookIt
         };
     }
 
+    // Update
+    rpc ReturnBook(ReturnBookRequest) returns (ReturnBookResponse) {
+        option (google.api.http) = {
+            put: "/v1/book/return",
+            body: "*"
+        };
+    }
+
 }
 
 
@@ -62,10 +70,21 @@ message GetAllBookResponse
 message UpdateBookRequest
 {
     int32 id = 1;
-    int32 CurrentOwnerId  = 2;
+    int32 CurrentOwnerId = 2;
 }
 
 message UpdateBookResponse
+{
+    int32 id = 1;
+}
+
+message ReturnBookRequest
+{
+    int32 id = 1;
+    int32 CurrentOwnerId = 2;
+}
+
+message ReturnBookResponse
 {
     int32 id = 1;
 }

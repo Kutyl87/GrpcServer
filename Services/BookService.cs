@@ -97,4 +97,33 @@ public class BookService : BookIt.BookItBase
         });
     }
 
+    public override async Task<ReturnBookResponse> ReturnBook(ReturnBookRequest request, ServerCallContext context)
+    {
+
+       
+        Console.WriteLine(request.CurrentOwnerId);
+        Console.WriteLine(request.Id);
+        Console.WriteLine(request.Id <= 0);
+        Console.WriteLine(request.CurrentOwnerId <= 0);
+
+
+        if (request.Id <= 0 || request.CurrentOwnerId <= 0)
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "You must suppply a valid object"));
+
+        var book = await _dbContext.Book.FirstOrDefaultAsync(t => t.BookId == request.Id && t.CurrentOwnerId == request.CurrentOwnerId);
+
+        if (book == null)
+            throw new RpcException(new Status(StatusCode.NotFound, $"No Task with Id {request.Id}"));
+
+        book.Availability = true;
+        book.CurrentOwnerId = null;
+
+        await _dbContext.SaveChangesAsync();
+
+        return await Task.FromResult(new ReturnBookResponse
+        {
+            Id = book.BookId
+        });
+    }
+
 }
