@@ -26,12 +26,12 @@ public class CustomerService : CustomerIt.CustomerItBase
         {
             var readCustomerResponse = new ReadCustomerResponse
             {
-                Id = customer.CustomerId,
+                Id = int.Parse(customer.Id),
                 Name = customer.Name,
                 Surname = customer.Surname,
                 Login = customer.Login,
-                Mail = customer.Mail,
-                Password = customer.Password
+                Mail = customer.Email,
+                Password = customer.PasswordHash
 
             };
 
@@ -49,19 +49,19 @@ public class CustomerService : CustomerIt.CustomerItBase
         if (request.Id <= 0)
             throw new RpcException(new Status(StatusCode.InvalidArgument, "resouce index must be greater than 0"));
 
-        var customer = await _dbContext.Customer.FirstOrDefaultAsync(t => t.CustomerId == request.Id);
+        var customer = await _dbContext.Customer.FirstOrDefaultAsync(t => int.Parse(t.Id) == request.Id);
 
         if (customer != null)
         {
             return await Task.FromResult(new ReadCustomerResponse
             {
-                Id = customer.CustomerId,
+                Id = int.Parse(customer.Id),
                 Name = customer.Name,
                 Surname = customer.Surname,
                 Login = customer.Login,
-                Mail = customer.Mail,
-                Password = customer.Password
-   
+                Mail = customer.Email,
+                Password = customer.PasswordHash
+
 
 
             });
