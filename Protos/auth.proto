@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+
+option csharp_namespace = "LibraryGrpc";
+
+package authit;
+
+service AuthIt {
+
+    rpc AuthUser(LogInRequest) returns (LogInResponse) {
+        option (google.api.http) = {
+            get: "/v1/auth/{email}"
+        };
+    }
+
+    rpc RegisterUser(RegisterRequest) returns (RegisterResponse) {
+        option (google.api.http) = {
+            put: "/v1/register/{email}"
+        };
+    }
+}
+
+message LogInRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message LogInResponse {
+    string status = 1;
+}
+
+message RegisterRequest {
+    string email = 1;
+    string name = 2;
+    string surname = 3;
+    string password = 4;
+    string confirmPassword = 5;
+}
+
+message RegisterResponse {
+    string message = 1;
+    bool isSuccess = 2;
+}

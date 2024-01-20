@@ -1,13 +1,14 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using LibraryGrpc.Models;
 
 namespace LibraryGrpc.Data;
 
-public class DbContextClass : DbContext
+public class DbContextClass : IdentityDbContext
 {
     protected readonly IConfiguration Configuration;
 
-    public DbContextClass(IConfiguration configuration)
+    public DbContextClass(DbContextOptions options,IConfiguration configuration) : base(options)
     {
         Configuration = configuration;
     }

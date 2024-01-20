@@ -68,4 +68,3 @@ message UpdateCustomerResponse
 {
     int32 id = 1;
 }
-    
