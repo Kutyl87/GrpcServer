@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.Data;
 using Grpc.Core;
 using LibraryGrpc.Models;
 using System.Runtime.InteropServices;
+using System.Reflection.Metadata.Ecma335;
 namespace LibraryGrpc.Services;
 
 public class AuthService : AuthIt.AuthItBase
@@ -36,7 +37,6 @@ public class AuthService : AuthIt.AuthItBase
             Surname = request.Surname
         };
         var result = await _userManager.CreateAsync(customer, request.Password);
-        Console.WriteLine(result);
         if (result.Succeeded)
             return new RegisterResponse
             {
@@ -45,8 +45,35 @@ public class AuthService : AuthIt.AuthItBase
             };
         return new RegisterResponse
         {
-            Message = "User did not create",
+            Message = "User was not created",
             IsSuccess = false,
+        };
+
+    }
+    public override async Task<LogInResponse> LogInUser(LogInRequest request, ServerCallContext context)
+    {
+        var user = await _userManager.FindByEmailAsync(request.Email);
+        if(user==null)
+        {
+            return new LogInResponse
+            {
+                Message = "There is no user associated with this password",
+                IsSuccess = false
+            };
+        }
+        var result = await _userManager.CheckPasswordAsync(user, request.Password);
+        if(!result)
+        {
+            return new LogInResponse
+                {
+                    Message = "Invalid Password!",
+                    IsSuccess = false
+                };
+        }
+        return new LogInResponse
+        {
+            Message = "Succesfully logged in!",
+            IsSuccess = true
         };
     }
 }
