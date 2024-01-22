@@ -52,13 +52,14 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
 // Configure the HTTP request pipeline.
-
+app.UseGrpcWeb();
 app.UseCors("AllowSpecificOrigin");
 // Use gRPC-Web middleware
 
 // Configure the HTTP request pipeline.
-app.MapGrpcService<GreeterService>();
+app.MapGrpcService<GreeterService>().EnableGrpcWeb();
 app.MapGrpcService<BookService>();
 app.MapGrpcService<OrderService>();
 app.MapGrpcService<CustomerService>();
