@@ -21,4 +21,6 @@ public class DbContextClass : IdentityDbContext
     public DbSet<Book> Book { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Customer> Customer { get; set; }
+
+    public DbSet<Category> Category { get; set; }
 }
