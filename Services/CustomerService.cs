@@ -58,7 +58,7 @@ public class CustomerService : CustomerIt.CustomerItBase
         {
             return await Task.FromResult(new ReadCustomerResponse
             {
-                Id = 1,
+                Id = customer.NumberId,
                 Name = customer.Name,
                 Surname = customer.Surname,
                 Login = customer.Login,

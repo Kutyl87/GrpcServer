@@ -15,6 +15,40 @@ public class BookService : BookIt.BookItBase
     {
         _dbContext = dbContext;
     }
+
+    public override async Task<GetBooksByCategoryResponse> GetBooksByCategory(GetBooksByCategoryRequest request, ServerCallContext context)
+    {
+        Console.WriteLine("testy");
+        var response = new GetBooksByCategoryResponse();
+        var Books = await _dbContext.Book.ToListAsync();
+
+        foreach (var book in Books)
+        {
+            if(book.Genre == request.Category)
+            {
+                var readBookResponse = new ReadBookResponse
+                {
+                    Id = book.BookId,
+                    Title = book.Title,
+                    Author = book.Author,
+                    Genre = book.Genre,
+                    Rating = book.Rating,
+                    Availability = book.Availability,
+                    Description = book.BookDescription
+                };
+
+                if (book.CurrentOwnerId != null)
+                {
+                    readBookResponse.CurrentOwnerId = (int)book.CurrentOwnerId;
+                }
+
+
+                response.Book.Add(readBookResponse);
+            }
+        }
+        Console.WriteLine(response);
+        return await Task.FromResult(response);
+    }
     public override async Task<GetAllBookResponse> ListBook(GetAllBookRequest request, ServerCallContext context)
     {
         var response = new GetAllBookResponse();
@@ -47,6 +81,21 @@ public class BookService : BookIt.BookItBase
         return await Task.FromResult(response);
     }
 
+    public override async Task<ListCategoriesResponse> ListCategories(ListCategoriesRequest request, ServerCallContext context)
+    {
+
+        var response = new ListCategoriesResponse();
+        var Books = await _dbContext.Book.ToListAsync();
+        List<string> uniqueCategories = Books.Select(book => book.Genre).Distinct().ToList();
+
+        foreach (string category in uniqueCategories)
+        {
+            response.Category.Add(category);
+        }
+        Console.WriteLine(response);
+        return await Task.FromResult(response);
+    }
+
     public override async Task<ReadBookResponse> ReadBook(ReadBookRequest request, ServerCallContext context)
     {
         if (request.Id <= 0)
@@ -70,6 +119,42 @@ public class BookService : BookIt.BookItBase
             });
         }
         throw new RpcException(new Status(StatusCode.NotFound, $"No Task with id {request.Id}"));
+    }
+
+    public override async Task<GetBookByTitleResponse> GetBookByTitle(GetBookByTitleRequest request, ServerCallContext context)
+    {
+        /*if (request.Title == "")
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "resouce index must be greater than 0"));*/
+        var response = new GetBookByTitleResponse();
+        var Books = await _dbContext.Book.ToListAsync();
+
+        foreach (var book in Books)
+        {
+            if(book.Title.ToLower().Contains(request.Title.ToLower()))
+            {
+                var readBookResponse = new ReadBookResponse
+                {
+                    Id = book.BookId,
+                    Title = book.Title,
+                    Author = book.Author,
+                    Genre = book.Genre,
+                    Rating = book.Rating,
+                    Availability = book.Availability,
+                    Description = book.BookDescription
+                };
+
+                if (book.CurrentOwnerId != null)
+                {
+                    readBookResponse.CurrentOwnerId = (int)book.CurrentOwnerId;
+                }
+
+
+                response.Book.Add(readBookResponse);
+            }
+           
+        }
+        Console.WriteLine(response);
+        return await Task.FromResult(response);
     }
 
     public override async Task<UpdateBookResponse> UpdateBook(UpdateBookRequest request, ServerCallContext context)
