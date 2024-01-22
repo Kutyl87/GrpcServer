@@ -34,7 +34,8 @@ public class AuthService : AuthIt.AuthItBase
             Email = request.Email,
             UserName = request.Email,
             Name = request.Name,
-            Surname = request.Surname
+            Surname = request.Surname,
+            Login = request.Email
         };
         var result = await _userManager.CreateAsync(customer, request.Password);
         if (result.Succeeded)

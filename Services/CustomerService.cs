@@ -26,7 +26,7 @@ public class CustomerService : CustomerIt.CustomerItBase
         {
             var readCustomerResponse = new ReadCustomerResponse
             {
-                Id = int.Parse(customer.Id),
+                Id = customer.NumberId,
                 Name = customer.Name,
                 Surname = customer.Surname,
                 Login = customer.Login,
@@ -46,16 +46,19 @@ public class CustomerService : CustomerIt.CustomerItBase
 
     public override async Task<ReadCustomerResponse> ReadCustomer(ReadCustomerRequest request, ServerCallContext context)
     {
+        Console.WriteLine(request.Id);
         if (request.Id <= 0)
             throw new RpcException(new Status(StatusCode.InvalidArgument, "resouce index must be greater than 0"));
-
-        var customer = await _dbContext.Customer.FirstOrDefaultAsync(t => int.Parse(t.Id) == request.Id);
-
+        Console.WriteLine("try");
+        var customer = await _dbContext.Customer.FirstOrDefaultAsync(t => t.NumberId == request.Id);
+        Console.WriteLine("try2");
+        Console.WriteLine(customer.NumberId);
+        Console.WriteLine(customer.Surname);
         if (customer != null)
         {
             return await Task.FromResult(new ReadCustomerResponse
             {
-                Id = int.Parse(customer.Id),
+                Id = customer.NumberId,
                 Name = customer.Name,
                 Surname = customer.Surname,
                 Login = customer.Login,
