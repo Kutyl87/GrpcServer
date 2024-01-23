@@ -59,6 +59,12 @@ service BookIt
             body: "*"
         };
     }
+    rpc GetBooksByUserId(ListAllBooksByCustomerIdRequest) returns (ListAllBooksByCustomerIdResponse)
+    {
+        option(google.api.http) = {
+            get: "/v1/book/userId"
+        };
+    }
 
 }
 
@@ -141,4 +147,11 @@ message ListCategoriesResponse
     repeated string category = 1;
 
 }
-    
+message ListAllBooksByCustomerIdRequest
+{
+    int32 userId =1;
+}
+message ListAllBooksByCustomerIdResponse
+{
+    repeated ReadBookResponse book = 1;
+}

@@ -24,7 +24,7 @@ public class BookService : BookIt.BookItBase
 
         foreach (var book in Books)
         {
-            if(book.Genre == request.Category)
+            if (book.Genre == request.Category)
             {
                 var readBookResponse = new ReadBookResponse
                 {
@@ -71,10 +71,10 @@ public class BookService : BookIt.BookItBase
             {
                 readBookResponse.CurrentOwnerId = (int)book.CurrentOwnerId;
             }
-            
+
 
             response.Book.Add(readBookResponse);
-            
+
 
         }
         Console.WriteLine(response);
@@ -130,7 +130,7 @@ public class BookService : BookIt.BookItBase
 
         foreach (var book in Books)
         {
-            if(book.Title.ToLower().Contains(request.Title.ToLower()))
+            if (book.Title.ToLower().Contains(request.Title.ToLower()))
             {
                 var readBookResponse = new ReadBookResponse
                 {
@@ -151,7 +151,7 @@ public class BookService : BookIt.BookItBase
 
                 response.Book.Add(readBookResponse);
             }
-           
+
         }
         Console.WriteLine(response);
         return await Task.FromResult(response);
@@ -185,7 +185,7 @@ public class BookService : BookIt.BookItBase
     public override async Task<ReturnBookResponse> ReturnBook(ReturnBookRequest request, ServerCallContext context)
     {
 
-       
+
         Console.WriteLine(request.CurrentOwnerId);
         Console.WriteLine(request.Id);
         Console.WriteLine(request.Id <= 0);
@@ -209,6 +209,35 @@ public class BookService : BookIt.BookItBase
         {
             Id = book.BookId
         });
+    }
+    public override async Task<ListAllBooksByCustomerIdResponse> GetBooksByUserId(ListAllBooksByCustomerIdRequest request, ServerCallContext context)
+    {
+        var response = new ListAllBooksByCustomerIdResponse();
+        var books = await _dbContext.Book.Where(t => t.CurrentOwnerId == request.UserId).ToListAsync();
+        if (books == null)
+            throw new RpcException(new Status(StatusCode.NotFound, $"No User with Id {request.UserId}"));
+        foreach (var book in books)
+        {
+            var readBookResponse = new ReadBookResponse
+            {
+                Id = book.BookId,
+                Title = book.Title,
+                Author = book.Author,
+                Genre = book.Genre,
+                Rating = book.Rating,
+                Availability = book.Availability,
+                Description = book.BookDescription
+            };
+
+            if (book.CurrentOwnerId != null)
+            {
+                readBookResponse.CurrentOwnerId = (int)book.CurrentOwnerId;
+            }
+            response.Book.Add(readBookResponse);
+        }
+
+        return await Task.FromResult(response);
+
     }
 
 }
