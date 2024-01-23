@@ -58,7 +58,7 @@ public class AuthService : AuthIt.AuthItBase
         {
             return new LogInResponse
             {
-                Message = "There is no user associated with this password",
+                Message = "There is no user associated with this mail",
                 IsSuccess = false
             };
         }
@@ -77,4 +77,32 @@ public class AuthService : AuthIt.AuthItBase
             IsSuccess = true
         };
     }
+
+    /*public override async Task<LogInAdminResponse> LogInAdmin(LogInAdminRequest request, ServerCallContext context)
+    {
+        var user = await _userManager.FindByEmailAsync(request.Email);
+        if (user == null)
+        {
+            return new LogInAdminResponse
+            {
+                Message = "There is no admin associated with this mail",
+                IsSuccess = false
+            };
+        }
+        var result = await _userManager.CheckPasswordAsync(user, request.Password);
+        if (!result)
+        {
+            Console.WriteLine("if2");
+            return new LogInResponse
+            {
+                Message = "Invalid Password!",
+                IsSuccess = false
+            };
+        }
+        return new LogInResponse
+        {
+            Message = "Succesfully logged in!",
+            IsSuccess = true
+        };
+    }*/
 }

@@ -84,6 +84,7 @@ message ReadBookResponse
     bool availability = 6;
     string description = 7;
     int32 CurrentOwnerId  = 8;
+    string ImageUrl  = 9;
     
 }
 

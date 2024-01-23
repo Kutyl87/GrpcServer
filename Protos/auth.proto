@@ -11,9 +11,10 @@ service AuthIt {
 
     rpc LogInUser(LogInRequest) returns (LogInResponse) {
         option (google.api.http) = {
-            get: "/v1/auth/{email}"
+            get: "/v1/auth/{email}/{password}"
         };
     }
+
 
     rpc RegisterUser(RegisterRequest) returns (RegisterResponse) {
         option (google.api.http) = {
@@ -31,6 +32,8 @@ message LogInResponse {
     string Message = 1;
     bool isSuccess = 2;
 }
+
+
 
 message RegisterRequest {
     string email = 1;
