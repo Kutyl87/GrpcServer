@@ -78,14 +78,14 @@ message UpdateOrderResponse
 
 message CreateOrderRequest
 {
-    int32 id = 1;
+    int32 orderId = 1;
     int32 bookId = 2;
     int32 customerId = 3;
 }
 
 message CreateOrderResponse
 {
-    int32 id = 1;
+    int32 orderId = 1;
 }
     
     

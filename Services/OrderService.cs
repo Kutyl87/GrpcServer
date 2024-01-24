@@ -107,7 +107,7 @@ public class OrderService : OrderIt.OrderItBase
     {
 
         if (request.BookId <= 0 || request.CustomerId <= 0)
-            throw new RpcException(new Status(StatusCode.InvalidArgument, "You must suppply a valid object"));
+            throw new RpcException(new Status(StatusCode.InvalidArgument, $"{request.BookId};{request.CustomerId};Error. You must suppply a valid object"));
 
         var newOrder = new Order
         {
@@ -123,7 +123,7 @@ public class OrderService : OrderIt.OrderItBase
 
         return await Task.FromResult(new CreateOrderResponse
         {
-            Id = request.Id
+            OrderId = request.OrderId
         });
     }
 
