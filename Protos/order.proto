@@ -79,11 +79,8 @@ message UpdateOrderResponse
 message CreateOrderRequest
 {
     int32 id = 1;
-    google.protobuf.Timestamp orderDate = 2;
-    int32 bookId = 3;
-    int32 customerId = 4;
-    string state = 5;
-    google.protobuf.Timestamp returnDate = 6;
+    int32 bookId = 2;
+    int32 customerId = 3;
 }
 
 message CreateOrderResponse

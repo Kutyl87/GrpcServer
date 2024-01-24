@@ -34,7 +34,8 @@ public class BookService : BookIt.BookItBase
                     Genre = book.Genre,
                     Rating = book.Rating,
                     Availability = book.Availability,
-                    Description = book.BookDescription
+                    Description = book.BookDescription,
+                    ImageUrl = book.ImageUrl
                 };
 
                 if (book.CurrentOwnerId != null)
@@ -64,7 +65,8 @@ public class BookService : BookIt.BookItBase
                 Genre = book.Genre,
                 Rating = book.Rating,
                 Availability = book.Availability,
-                Description = book.BookDescription
+                Description = book.BookDescription,
+                ImageUrl = book.ImageUrl
             };
 
             if (book.CurrentOwnerId != null)
@@ -113,7 +115,8 @@ public class BookService : BookIt.BookItBase
                 Genre = book.Genre,
                 Rating = book.Rating,
                 Availability = book.Availability,
-                Description = book.BookDescription
+                Description = book.BookDescription,
+                ImageUrl = book.ImageUrl
 
 
             });
@@ -140,7 +143,8 @@ public class BookService : BookIt.BookItBase
                     Genre = book.Genre,
                     Rating = book.Rating,
                     Availability = book.Availability,
-                    Description = book.BookDescription
+                    Description = book.BookDescription,
+                    ImageUrl = book.ImageUrl
                 };
 
                 if (book.CurrentOwnerId != null)
@@ -226,7 +230,8 @@ public class BookService : BookIt.BookItBase
                 Genre = book.Genre,
                 Rating = book.Rating,
                 Availability = book.Availability,
-                Description = book.BookDescription
+                Description = book.BookDescription,
+                ImageUrl = book.ImageUrl
             };
 
             if (book.CurrentOwnerId != null)

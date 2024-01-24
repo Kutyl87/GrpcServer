@@ -103,5 +103,29 @@ public class OrderService : OrderIt.OrderItBase
         });
     }
 
+    public override async Task<CreateOrderResponse> CreateOrder(CreateOrderRequest request, ServerCallContext context)
+    {
+
+        if (request.BookId <= 0 || request.CustomerId <= 0)
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "You must suppply a valid object"));
+
+        var newOrder = new Order
+        {
+            BookId = request.BookId,
+            CustomerId = request.CustomerId,
+            OrderDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+            State = "Delivered",
+            ReturnDate = null
+        };
+        Console.WriteLine(newOrder.OrderDate);
+        await _dbContext.AddAsync(newOrder);
+        await _dbContext.SaveChangesAsync();
+
+        return await Task.FromResult(new CreateOrderResponse
+        {
+            Id = request.Id
+        });
+    }
+
 
 }

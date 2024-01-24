@@ -61,7 +61,7 @@ service BookIt
     }
     rpc GetBooksByUserId(ListAllBooksByCustomerIdRequest) returns (ListAllBooksByCustomerIdResponse)
     {
-        option(google.api.http) = {
+        option (google.api.http) = {
             get: "/v1/book/userId"
         };
     }
